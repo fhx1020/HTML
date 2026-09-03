@@ -1,0 +1,1738 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="description" content="豫你一起，同心护网：医疗健康领域互联网辟谣科普 H5">
+  <meta name="theme-color" content="#0a4a42">
+  <title>豫你一起 同心护网 | 健康谣言门诊</title>
+  <style>
+    :root {
+      --ink: #173b38;
+      --ink-soft: #4d6762;
+      --deep: #0a4a42;
+      --deep-2: #116157;
+      --teal: #17836f;
+      --mint: #dcece4;
+      --mint-light: #eff7f1;
+      --paper: #f8fbf6;
+      --white: #ffffff;
+      --coral: #d75c48;
+      --sun: #eeb74d;
+      --line: rgba(23, 59, 56, 0.14);
+      --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", SimSun, serif;
+      --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
+    body {
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+        linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+        #b8cfc5;
+      background-size: 34px 34px;
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      touch-action: manipulation;
+    }
+
+    button {
+      border: 0;
+      font-family: inherit;
+    }
+
+    .svg-sprite {
+      display: none;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 auto;
+    }
+
+    .icon :is(path, circle, rect, ellipse, line, polyline, polygon) {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .stage {
+      position: relative;
+      width: min(100%, 500px);
+      height: 100vh;
+      height: 100svh;
+      margin: 0 auto;
+      overflow: hidden;
+      background: var(--paper);
+      box-shadow: 0 0 70px rgba(8, 47, 43, 0.2);
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--paper);
+    }
+
+    .screen.is-active {
+      display: flex;
+      animation: screenIn 0.38s ease both;
+    }
+
+    @keyframes screenIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .screen__top {
+      display: flex;
+      width: 100%;
+      min-height: 58px;
+      padding: max(14px, env(safe-area-inset-top)) 18px 0;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .back-button {
+      display: inline-flex;
+      width: 38px;
+      height: 38px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.82);
+      cursor: pointer;
+    }
+
+    .back-button .icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .step-pill {
+      display: inline-flex;
+      height: 28px;
+      padding: 0 10px;
+      align-items: center;
+      border-radius: 999px;
+      color: var(--deep);
+      background: var(--mint);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .screen__body {
+      position: relative;
+      width: 100%;
+      min-height: 0;
+      flex: 1;
+      padding: 10px 20px 18px;
+      overflow: hidden;
+    }
+
+    .eyebrow {
+      margin: 0 0 7px;
+      color: var(--coral);
+      font-family: var(--serif);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .screen__body h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 28px;
+      line-height: 1.28;
+    }
+
+    .screen__sub {
+      margin: 8px 0 0;
+      color: var(--ink-soft);
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    .btn {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 17px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn--primary {
+      background: var(--deep);
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(10, 74, 66, 0.18);
+    }
+
+    .btn--sun {
+      background: var(--sun);
+      color: #18312e;
+      box-shadow: 0 10px 22px rgba(109, 72, 9, 0.18);
+    }
+
+    .btn--ghost {
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      background: rgba(255, 255, 255, 0.75);
+    }
+
+    .btn--wide {
+      width: 100%;
+    }
+
+    .btn .icon {
+      width: 17px;
+      height: 17px;
+    }
+
+    .screen--home {
+      color: #f7fcf6;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(160deg, #0e5f53, #083f3b 70%, #0a5147);
+      background-size: 100% 54px, auto;
+    }
+
+    .screen--home::after {
+      position: absolute;
+      right: -90px;
+      bottom: -60px;
+      width: 230px;
+      height: 230px;
+      border: 1px solid rgba(240, 184, 80, 0.18);
+      transform: rotate(45deg);
+      content: "";
+    }
+
+    .home__inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      padding: max(24px, env(safe-area-inset-top)) 22px max(24px, calc(env(safe-area-inset-bottom) + 16px));
+    }
+
+    .home__brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .brand-seal {
+      position: relative;
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      border-radius: 50%;
+      color: var(--sun);
+      font-family: var(--serif);
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .brand-seal::before {
+      position: absolute;
+      inset: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 50%;
+      content: "";
+    }
+
+    .brand-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .brand-copy strong {
+      font-family: var(--serif);
+      font-size: 18px;
+    }
+
+    .brand-copy span {
+      color: rgba(247, 252, 246, 0.68);
+      font-size: 10px;
+    }
+
+    .home__main {
+      display: flex;
+      min-height: 0;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .home__art {
+      width: min(52vw, 220px);
+      margin-top: 4px;
+    }
+
+    .home__art svg {
+      width: 100%;
+      height: auto;
+    }
+
+    .home__art .art-shield {
+      fill: rgba(235, 247, 239, 0.08);
+      stroke: var(--sun);
+      stroke-width: 2;
+    }
+
+    .home__art .art-inner {
+      fill: rgba(9, 84, 72, 0.3);
+      stroke: rgba(237, 216, 164, 0.8);
+      stroke-width: 1.5;
+      stroke-dasharray: 3 3;
+    }
+
+    .home__art .art-cross {
+      fill: var(--sun);
+    }
+
+    .home__art .art-line {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.55);
+      stroke-width: 1.4;
+      stroke-dasharray: 4 5;
+    }
+
+    .home__art .art-heart {
+      fill: none;
+      stroke: #f3d596;
+      stroke-width: 2;
+    }
+
+    .home__kicker {
+      margin: 14px 0 0;
+      padding: 5px 11px;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 999px;
+      color: rgba(247, 252, 246, 0.84);
+      font-size: 11px;
+    }
+
+    .home__title {
+      margin: 12px 0 0;
+      font-family: var(--serif);
+      font-size: clamp(45px, 12vw, 62px);
+      font-weight: 800;
+      line-height: 1.04;
+    }
+
+    .home__title span {
+      display: block;
+      color: var(--sun);
+    }
+
+    .home__lead {
+      max-width: 330px;
+      margin: 14px 0 0;
+      color: rgba(247, 252, 246, 0.84);
+      font-size: 13.5px;
+      line-height: 1.8;
+    }
+
+    .home__tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 14px;
+    }
+
+    .home__tags span {
+      padding: 5px 9px;
+      border-radius: 999px;
+      color: rgba(247, 252, 246, 0.86);
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 10px;
+    }
+
+    .home__foot {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #startButton {
+      width: 100%;
+      max-width: 420px;
+      min-height: 50px;
+    }
+
+    .home__hint {
+      display: flex;
+      margin-top: 9px;
+      align-items: center;
+      gap: 6px;
+      color: rgba(247, 252, 246, 0.58);
+      font-size: 10px;
+    }
+
+    .screen--triage .screen__body,
+    .screen--skill .screen__body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .triage__head {
+      max-width: 430px;
+      margin: 4px auto 13px;
+    }
+
+    .triage-list {
+      display: grid;
+      max-width: 430px;
+      margin: 0 auto;
+      gap: 9px;
+    }
+
+    .triage-item {
+      display: grid;
+      width: 100%;
+      min-height: 68px;
+      grid-template-columns: 42px 1fr 24px;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink);
+      background: var(--white);
+      text-align: left;
+      cursor: pointer;
+      box-shadow: 0 5px 12px rgba(14, 55, 50, 0.05);
+    }
+
+    .triage-item:active {
+      border-color: var(--teal);
+    }
+
+    .triage-item__icon {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border-radius: 8px;
+      color: var(--deep);
+      background: var(--mint);
+    }
+
+    .triage-item__icon .icon {
+      width: 21px;
+      height: 21px;
+    }
+
+    .triage-item__text strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .triage-item__text small {
+      display: block;
+      margin-top: 3px;
+      color: var(--ink-soft);
+      font-size: 11px;
+    }
+
+    .triage-item > .icon {
+      width: 18px;
+      height: 18px;
+      color: var(--teal);
+    }
+
+    .case__content {
+      display: flex;
+      max-width: 440px;
+      margin: 2px auto 0;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .case-tag-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .case-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      color: var(--deep);
+      background: var(--mint);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .case-chip .icon {
+      width: 15px;
+      height: 15px;
+    }
+
+    .case-id {
+      color: rgba(23, 59, 56, 0.42);
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .case__content h2 {
+      margin: 0 0 12px;
+      font-family: var(--serif);
+      font-size: 21px;
+      line-height: 1.55;
+    }
+
+    .case-block {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 13px;
+      background: var(--white);
+    }
+
+    .case-block + .case-block {
+      margin-top: 9px;
+    }
+
+    .case-block__label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .case-block__label .icon {
+      width: 15px;
+      height: 15px;
+    }
+
+    .case-block--rumor {
+      border-left: 4px solid var(--coral);
+      background: #fdf3ee;
+    }
+
+    .case-block--rumor .case-block__label {
+      color: var(--coral);
+    }
+
+    .case-block--truth {
+      border-left: 4px solid var(--teal);
+      background: var(--mint-light);
+    }
+
+    .case-block--truth .case-block__label {
+      color: var(--teal);
+    }
+
+    .case-block p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .case-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-left: 3px solid var(--sun);
+      color: rgba(23, 59, 56, 0.75);
+      background: rgba(238, 183, 77, 0.12);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .case-note .icon {
+      width: 15px;
+      height: 15px;
+      margin-top: 2px;
+    }
+
+    .case-switch {
+      display: flex;
+      max-width: 440px;
+      margin: auto auto 0;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 10px;
+    }
+
+    .case-switch__btn {
+      min-height: 42px;
+      padding: 0 13px;
+    }
+
+    .case-count {
+      color: var(--ink-soft);
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .skill__head {
+      max-width: 430px;
+      margin: 4px auto 9px;
+    }
+
+    .skill-steps {
+      display: grid;
+      max-width: 430px;
+      margin: 0 auto;
+      gap: 6px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .skill-step {
+      display: grid;
+      min-height: 50px;
+      grid-template-columns: 36px 1fr;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 11px;
+      border: 1px solid rgba(23, 59, 56, 0.1);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .skill-step__num {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--deep);
+      background: var(--mint);
+      font-family: var(--serif);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .skill-step strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .skill-step small {
+      display: block;
+      margin-top: 2px;
+      color: var(--ink-soft);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .skill-reminder {
+      display: flex;
+      max-width: 430px;
+      margin: 10px auto 0;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 9px 11px;
+      border-left: 4px solid var(--coral);
+      background: rgba(215, 92, 72, 0.08);
+    }
+
+    .skill-reminder .icon {
+      width: 19px;
+      height: 19px;
+      color: var(--coral);
+    }
+
+    .skill-reminder strong {
+      display: block;
+      margin-bottom: 2px;
+      font-family: var(--serif);
+      font-size: 13px;
+    }
+
+    .skill-reminder p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 11.5px;
+      line-height: 1.55;
+    }
+
+    .skill__actions {
+      display: flex;
+      max-width: 430px;
+      margin: auto auto 0;
+      width: 100%;
+    }
+
+    .skill__actions .btn {
+      width: 100%;
+    }
+
+    .screen--quiz {
+      background: var(--mint-light);
+    }
+
+    .quiz__wrap {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+    }
+
+    .quiz__head {
+      display: flex;
+      max-width: 440px;
+      margin: 4px auto 8px;
+      width: 100%;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .quiz__head h2 {
+      font-size: 26px;
+    }
+
+    .quiz-progress {
+      display: flex;
+      min-width: 70px;
+      min-height: 30px;
+      padding: 0 9px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      color: var(--deep);
+      background: var(--white);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .quiz-card {
+      position: relative;
+      display: flex;
+      max-width: 440px;
+      width: 100%;
+      margin: 0 auto;
+      flex-direction: column;
+      border-radius: 8px;
+      padding: 15px 15px 13px;
+      background: var(--white);
+      box-shadow: 0 14px 30px rgba(13, 63, 56, 0.1);
+    }
+
+    .quiz-card::before {
+      position: absolute;
+      top: 0;
+      left: 16px;
+      right: 16px;
+      height: 3px;
+      border-radius: 0 0 3px 3px;
+      background: linear-gradient(90deg, var(--teal), var(--sun) 58%, var(--coral));
+      content: "";
+    }
+
+    .quiz-card h3 {
+      min-height: 58px;
+      margin: 5px 0 10px;
+      font-family: var(--serif);
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 7px;
+    }
+
+    .quiz-option {
+      display: grid;
+      width: 100%;
+      min-height: 44px;
+      grid-template-columns: 26px 1fr;
+      align-items: center;
+      gap: 9px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      color: var(--ink);
+      background: #fff;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .quiz-option__key {
+      display: grid;
+      width: 24px;
+      height: 24px;
+      place-items: center;
+      border: 1px solid rgba(23, 59, 56, 0.24);
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .quiz-option span:last-child {
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    .quiz-option.is-correct {
+      border-color: var(--teal);
+      background: #e7f3ed;
+    }
+
+    .quiz-option.is-correct .quiz-option__key {
+      border-color: var(--teal);
+      background: var(--teal);
+      color: #fff;
+    }
+
+    .quiz-option.is-wrong {
+      border-color: var(--coral);
+      background: #fcebe6;
+    }
+
+    .quiz-option.is-wrong .quiz-option__key {
+      border-color: var(--coral);
+      background: var(--coral);
+      color: #fff;
+    }
+
+    .quiz-option:disabled {
+      cursor: default;
+    }
+
+    .quiz-feedback {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 9px 10px;
+      border-radius: 7px;
+      background: var(--mint-light);
+    }
+
+    .quiz-feedback[hidden],
+    #quizNext[hidden] {
+      display: none;
+    }
+
+    .quiz-feedback__icon {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--teal);
+    }
+
+    .quiz-feedback__icon .icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .quiz-feedback strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 12px;
+    }
+
+    .quiz-feedback p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 11.5px;
+      line-height: 1.6;
+    }
+
+    #quizNext {
+      width: 100%;
+      margin-top: 10px;
+      min-height: 44px;
+    }
+
+    .screen--result {
+      background: var(--deep);
+      color: #f6fbf6;
+    }
+
+    .result__inner {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 24px max(26px, calc(env(safe-area-inset-bottom) + 16px));
+      text-align: center;
+    }
+
+    .result-seal {
+      position: relative;
+      display: grid;
+      width: 110px;
+      height: 110px;
+      place-items: center;
+      border: 2px solid rgba(238, 183, 77, 0.8);
+      border-radius: 50%;
+      color: var(--sun);
+      background: rgba(255, 255, 255, 0.05);
+      font-family: var(--serif);
+      font-size: 52px;
+      font-weight: 800;
+    }
+
+    .result-seal::before {
+      position: absolute;
+      inset: 9px;
+      border: 1px dashed rgba(238, 183, 77, 0.65);
+      border-radius: 50%;
+      content: "";
+    }
+
+    .result-seal i {
+      position: absolute;
+      top: -7px;
+      right: 14px;
+      width: 14px;
+      height: 24px;
+      background: var(--sun);
+      transform: rotate(45deg);
+    }
+
+    .result__eyebrow {
+      margin: 22px 0 6px;
+      color: rgba(238, 183, 77, 0.92);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .result__inner h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 34px;
+    }
+
+    .result__inner > p:not(.result__eyebrow) {
+      max-width: 340px;
+      margin: 10px 0 20px;
+      color: rgba(247, 252, 246, 0.74);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .result-actions {
+      display: flex;
+      width: 100%;
+      max-width: 420px;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .result-actions .btn {
+      flex: 1 1 150px;
+    }
+
+    .result-actions .btn--ghost {
+      border-color: rgba(255, 255, 255, 0.28);
+      color: rgba(247, 252, 246, 0.84);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .result-note {
+      max-width: 360px;
+      margin-top: 18px;
+      color: rgba(247, 252, 246, 0.48);
+      font-size: 10.5px;
+      line-height: 1.7;
+    }
+
+    @media (max-height: 720px) {
+      .screen__body {
+        padding-top: 5px;
+        padding-bottom: 10px;
+      }
+
+      .home__inner {
+        padding-top: 17px;
+      }
+
+      .home__art {
+        width: min(42vw, 160px);
+        margin-top: 0;
+      }
+
+      .home__kicker {
+        margin-top: 9px;
+      }
+
+      .home__title {
+        margin-top: 8px;
+        font-size: clamp(40px, 11vw, 50px);
+      }
+
+      .home__lead {
+        margin-top: 8px;
+        font-size: 12px;
+        line-height: 1.65;
+      }
+
+      .home__tags {
+        margin-top: 9px;
+      }
+
+      .screen__body h2 {
+        font-size: 24px;
+      }
+
+      .triage-item {
+        min-height: 60px;
+      }
+
+      .case-block {
+        padding: 9px 11px;
+      }
+
+      .case-block p {
+        font-size: 12px;
+        line-height: 1.65;
+      }
+
+      .case__content h2 {
+        margin-bottom: 8px;
+        font-size: 19px;
+      }
+
+      .case-switch {
+        padding-top: 6px;
+      }
+
+      .skill-step {
+        min-height: 38px;
+        grid-template-columns: 32px 1fr;
+        gap: 9px;
+        padding: 5px 9px;
+      }
+
+      .skill-step__num {
+        width: 29px;
+        height: 29px;
+        font-size: 12px;
+      }
+
+      .skill-step small {
+        font-size: 10px;
+        line-height: 1.25;
+      }
+
+      .skill-reminder {
+        margin-top: 7px;
+        padding: 7px 9px;
+      }
+
+      .skill__actions {
+        margin-top: 8px;
+      }
+
+      .quiz-card h3 {
+        min-height: 50px;
+        margin: 4px 0 8px;
+        font-size: 16px;
+      }
+
+      .quiz-option {
+        min-height: 39px;
+      }
+
+      .quiz-option span:last-child {
+        font-size: 11.5px;
+      }
+
+      .result-seal {
+        width: 92px;
+        height: 92px;
+        font-size: 42px;
+      }
+    }
+
+    @media (max-width: 350px) {
+      .screen__body {
+        padding-right: 14px;
+        padding-left: 14px;
+      }
+
+      .triage-item {
+        grid-template-columns: 36px 1fr 20px;
+        padding-right: 9px;
+        padding-left: 9px;
+      }
+
+      .triage-item__icon {
+        width: 34px;
+        height: 34px;
+      }
+
+      .case-block p,
+      .case-note {
+        font-size: 11.5px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .screen.is-active {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true">
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.2 5.2 5.7v5.4c0 4.2 2.8 8 6.8 9.7 4-1.7 6.8-5.5 6.8-9.7V5.7L12 3.2Z"/><path d="M8.8 11.9l2.2 2.3 4.2-4.5"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.3 5.2 13.6A4.4 4.4 0 0 1 11.3 7l.7.8.7-.8a4.4 4.4 0 0 1 6.1 6.6L12 20.3Z"/></symbol>
+    <symbol id="i-pill" viewBox="0 0 24 24"><rect x="3.5" y="8.6" width="17" height="6.8" rx="3.4" transform="rotate(-28 12 12)"/><path d="M9.6 11.2a2.3 2.3 0 0 1 3.3 3.3"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.8 12s3.3-6 9.2-6 9.2 6 9.2 6-3.3 6-9.2 6-9.2-6-9.2-6Z"/><circle cx="12" cy="12" r="2.7"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m15.5 15.5 5 5M8.5 10.8h4.6M10.8 8.5v4.6"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4.5h11.5A2.5 2.5 0 0 1 19 7v12.5H7.5A2.5 2.5 0 0 1 5 17V4.5Z"/><path d="M19 17.5H7.5A2.5 2.5 0 0 0 5 20h14v-2.5ZM8.8 8h5.7M8.8 11.4h5.7"/></symbol>
+    <symbol id="i-megaphone" viewBox="0 0 24 24"><path d="M3.2 10.1v3.8h3l4.6 4V6.1l-4.6 4h-3Z"/><path d="M16 9.2c1 .7 1.6 1.7 1.6 2.8s-.6 2.1-1.6 2.8M18.2 6.2a7.5 7.5 0 0 1 0 11.6M10.8 17.9 9 20.7H6.2"/></symbol>
+    <symbol id="i-report" viewBox="0 0 24 24"><path d="M12 4.5H6a2 2 0 0 0-2 2V15a2 2 0 0 0 2 2h2.2L12 20v-3h6a2 2 0 0 0 2-2V6.5a2 2 0 0 0-2-2h-6Z"/><path d="M8.6 10h6.8M8.6 13h4.4"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19.2 7"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M4.5 12h15M14 6.5 19.5 12 14 17.5"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19.5 12h-15M10 6.5 4.5 12 10 17.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/></symbol>
+    <symbol id="i-user-check" viewBox="0 0 24 24"><path d="M4.5 19.5v-1.6a6 6 0 0 1 5.5-5.1 7 7 0 0 1 2.1.1M14.5 4.7a4.3 4.3 0 1 1-3 7.3"/><path d="m15.5 15.8 2.3 2.2 4.2-4.6"/></symbol>
+    <symbol id="i-question" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.4 9.2a2.7 2.7 0 0 1 5.2.9c0 1.9-2.6 2.2-2.6 4M12 17.4h.01"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 8.5A8.5 8.5 0 1 0 20 15M20 3.5v5h-5"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M9.5 15.2 15.2 9.5M7.5 12.5l-2.2 2.2a4.3 4.3 0 0 0 6.1 6.1l2.2-2.2M16.5 11.5l2.2-2.2a4.3 4.3 0 0 0-6.1-6.1l-2.2 2.2"/></symbol>
+    <symbol id="i-stethoscope" viewBox="0 0 24 24"><path d="M5.5 3.5v5.5a5.5 5.5 0 0 0 11 0V3.5"/><path d="M11 20h-1a5 5 0 0 1-5-5v-2M6 14h.01M18.5 12.2a2.2 2.2 0 1 0 0 4.4 2.2 2.2 0 0 0 0-4.4Z"/></symbol>
+  </svg>
+
+  <div class="stage">
+    <main>
+      <section class="screen screen--home is-active" data-screen="home">
+        <div class="home__inner">
+          <div class="home__brand">
+            <div class="brand-seal" aria-hidden="true">豫</div>
+            <div class="brand-copy">
+              <strong>豫网清风</strong>
+              <span>2026 河南互联网辟谣公益宣传</span>
+            </div>
+          </div>
+
+          <div class="home__main">
+            <div class="home__art" aria-hidden="true">
+              <svg viewBox="0 0 260 180">
+                <path class="art-shield" d="M130 18 218 40v51c0 43-33 70-88 83-55-13-88-40-88-83V40L130 18Z"/>
+                <path class="art-inner" d="M130 42 190 57v34c0 30-22 51-60 63-38-12-60-33-60-63V57L130 42Z"/>
+                <path class="art-heart" d="M130 65c-10-9-25-2-25 10 0 12 17 21 25 27 8-6 25-15 25-27 0-12-15-19-25-10Z"/>
+                <path class="art-cross" d="M111 118h38M130 99v38"/>
+                <path class="art-line" d="M34 118h58M168 118h58M50 145h160"/>
+              </svg>
+            </div>
+            <p class="home__kicker">健康谣言门诊 · 同心护网进行时</p>
+            <h1 class="home__title">豫你一起<br><span>同心护网</span></h1>
+            <p class="home__lead">把注意力收回到医疗健康领域：识别偏方话术、查证就医提醒，不让一条健康谣言，耽误一次该去医院的判断。</p>
+            <div class="home__tags">
+              <span>用药误区</span>
+              <span>检查治疗</span>
+              <span>生活健康</span>
+              <span>就医提醒</span>
+            </div>
+          </div>
+
+          <div class="home__foot">
+            <button class="btn btn--sun" id="startButton" type="button">
+              开始健康辟谣
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+            </button>
+            <div class="home__hint">
+              <svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>
+              不信谣 · 不传谣 · 不造谣
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen screen--triage" data-screen="triage">
+        <div class="screen__top">
+          <button class="back-button" type="button" data-go="home" aria-label="返回首页">
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"></use></svg>
+          </button>
+          <span class="step-pill">02 / 05</span>
+        </div>
+        <div class="screen__body">
+          <div class="triage__head">
+            <p class="eyebrow">健康谣言门诊</p>
+            <h2>先选一个就诊方向</h2>
+            <p class="screen__sub">这四个话题，是最常出现在家庭群、短视频和养生直播里的健康谣言。</p>
+          </div>
+          <div class="triage-list">
+            <button class="triage-item" type="button" data-case="0">
+              <span class="triage-item__icon"><svg class="icon" aria-hidden="true"><use href="#i-pill"></use></svg></span>
+              <span class="triage-item__text">
+                <strong>用药误区</strong>
+                <small>偏方、保健品替代正规治疗</small>
+              </span>
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+            </button>
+            <button class="triage-item" type="button" data-case="1">
+              <span class="triage-item__icon"><svg class="icon" aria-hidden="true"><use href="#i-eye"></use></svg></span>
+              <span class="triage-item__text">
+                <strong>检查治疗</strong>
+                <small>“根治近视”等治疗神话</small>
+              </span>
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+            </button>
+            <button class="triage-item" type="button" data-case="2">
+              <span class="triage-item__icon"><svg class="icon" aria-hidden="true"><use href="#i-heart"></use></svg></span>
+              <span class="triage-item__text">
+                <strong>生活健康</strong>
+                <small>手机辐射、日常习惯类恐慌</small>
+              </span>
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+            </button>
+            <button class="triage-item" type="button" data-case="3">
+              <span class="triage-item__icon"><svg class="icon" aria-hidden="true"><use href="#i-stethoscope"></use></svg></span>
+              <span class="triage-item__text">
+                <strong>就医提醒</strong>
+                <small>医保短信、陌生链接类骗局</small>
+              </span>
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen screen--case" data-screen="case">
+        <div class="screen__top">
+          <button class="back-button" type="button" data-go="triage" aria-label="返回就诊方向">
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"></use></svg>
+          </button>
+          <span class="step-pill">03 / 05</span>
+        </div>
+        <div class="screen__body">
+          <div class="case__content">
+            <div class="case-tag-row">
+              <span class="case-chip" id="caseTag">
+                <svg class="icon" aria-hidden="true"><use href="#i-pill"></use></svg>
+                用药误区
+              </span>
+              <span class="case-id" id="caseId">病例 01 / 04</span>
+            </div>
+            <h2 id="caseTitle"></h2>
+            <div class="case-block case-block--rumor">
+              <div class="case-block__label">
+                <svg class="icon" aria-hidden="true"><use href="#i-megaphone"></use></svg>
+                传播内容
+              </div>
+              <p id="caseRumor"></p>
+            </div>
+            <div class="case-block case-block--truth">
+              <div class="case-block__label">
+                <svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>
+                真相还原
+              </div>
+              <p id="caseTruth"></p>
+            </div>
+            <div class="case-note">
+              <svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg>
+              <span><b>核查要点：</b><span id="caseKey"></span></span>
+            </div>
+          </div>
+          <div class="case-switch">
+            <button class="btn btn--ghost case-switch__btn" id="casePrev" type="button">
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"></use></svg>
+              <span id="casePrevText">返回科室</span>
+            </button>
+            <span class="case-count" id="caseCount">1 / 4</span>
+            <button class="btn btn--primary case-switch__btn" id="caseNext" type="button">
+              <span id="caseNextText">下一病例</span>
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen screen--skill" data-screen="skill">
+        <div class="screen__top">
+          <button class="back-button" type="button" data-go="case" aria-label="返回病例">
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"></use></svg>
+          </button>
+          <span class="step-pill">04 / 05</span>
+        </div>
+        <div class="screen__body">
+          <div class="skill__head">
+            <p class="eyebrow">防谣技能</p>
+            <h2>医疗谣言排查五步</h2>
+            <p class="screen__sub">把“听说”变成“查过”，再决定要不要相信。</p>
+          </div>
+          <ol class="skill-steps">
+            <li class="skill-step">
+              <span class="skill-step__num">1</span>
+              <div>
+                <strong>先停一停</strong>
+                <small>越像救命偏方，越不要急着转发给家人。</small>
+              </div>
+            </li>
+            <li class="skill-step">
+              <span class="skill-step__num">2</span>
+              <div>
+                <strong>看发布者</strong>
+                <small>是医疗机构、认证医生，还是养生直播间。</small>
+              </div>
+            </li>
+            <li class="skill-step">
+              <span class="skill-step__num">3</span>
+              <div>
+                <strong>搜权威信源</strong>
+                <small>用症状、药名、政策关键词找官方发布和科普平台。</small>
+              </div>
+            </li>
+            <li class="skill-step">
+              <span class="skill-step__num">4</span>
+              <div>
+                <strong>读原始内容</strong>
+                <small>核对文号、发布日期和上下文，防止移花接木。</small>
+              </div>
+            </li>
+            <li class="skill-step">
+              <span class="skill-step__num">5</span>
+              <div>
+                <strong>提醒并举报</strong>
+                <small>发现谣言保留截图，向平台或属地网信部门反映。</small>
+              </div>
+            </li>
+          </ol>
+          <div class="skill-reminder">
+            <svg class="icon" aria-hidden="true"><use href="#i-user-check"></use></svg>
+            <div>
+              <strong>一个记忆点</strong>
+              <p>凡是让你“停药、交钱、立刻点链接”的健康信息，先查证再行动。</p>
+            </div>
+          </div>
+          <div class="skill__actions">
+            <button class="btn btn--primary" id="skillNext" type="button">
+              进入护网问答
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen screen--quiz" data-screen="quiz">
+        <div class="screen__top">
+          <button class="back-button" type="button" data-go="skill" aria-label="返回防谣技能">
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"></use></svg>
+          </button>
+          <span class="step-pill">05 / 05</span>
+        </div>
+        <div class="screen__body">
+          <div class="quiz__wrap">
+            <div class="quiz__head">
+              <div>
+                <p class="eyebrow">护网问答</p>
+                <h2>健康信息判断力测试</h2>
+              </div>
+              <div class="quiz-progress">
+                <span id="quizProgress">1 / 4</span>
+              </div>
+            </div>
+            <div class="quiz-card">
+              <h3 id="questionText"></h3>
+              <div class="quiz-options" id="quizOptions"></div>
+              <div class="quiz-feedback" id="quizFeedback" hidden>
+                <span class="quiz-feedback__icon" id="feedbackIcon"></span>
+                <div>
+                  <strong id="feedbackTitle"></strong>
+                  <p id="feedbackText"></p>
+                </div>
+              </div>
+              <button class="btn btn--primary" id="quizNext" type="button" hidden></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen screen--result" data-screen="result">
+        <div class="result__inner">
+          <div class="result-seal" aria-hidden="true">豫<i></i></div>
+          <p class="result__eyebrow" id="resultEyebrow">同心护网徽章</p>
+          <h2 id="resultTitle"></h2>
+          <p id="resultText"></p>
+          <div class="result-actions">
+            <button class="btn btn--ghost" id="resultHome" type="button">
+              返回首页
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"></use></svg>
+            </button>
+            <button class="btn btn--sun" id="resultRetry" type="button">
+              再练一次
+              <svg class="icon" aria-hidden="true"><use href="#i-refresh"></use></svg>
+            </button>
+          </div>
+          <p class="result-note">健康信息以正规医院、疾控部门、药监部门和权威科普平台发布为准。</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const screens = Array.from(document.querySelectorAll(".screen"));
+    const caseData = [
+      {
+        icon: "i-pill",
+        tag: "用药误区",
+        title: "“洋葱水、木耳能软化血管，从此不用再吃降压药”",
+        rumor: "家族群转发养生视频：每天喝洋葱水、吃黑木耳，三个月血管就能“自动软化”，并称老中医亲测有效。",
+        truth: "洋葱和木耳是普通食物，目前没有可靠科学证据表明它们能替代降压药。突然停药可能造成血压波动，慢病用药的调整应由医生结合检查结果判断。",
+        key: "症状、药品资质、医生身份、是否宣称根治"
+      },
+      {
+        icon: "i-eye",
+        tag: "检查治疗",
+        title: "“某某眼药水坚持滴，能治好孩子的真性近视”",
+        rumor: "直播间展示滴完眼药水后视力表“多看清两行”，称纯中药配方无副作用，建议家长一次购买三个疗程。",
+        truth: "真性近视由眼轴变长等结构性因素造成，普通眼药水无法逆转；不科学的滴用还可能刺激眼睛。视力异常应到正规医疗机构眼科验光，遵医嘱干预。",
+        key: "药品或医疗器械批号、执业医师资质、正规医院复查"
+      },
+      {
+        icon: "i-heart",
+        tag: "生活健康",
+        title: "“手机放枕头底下会致癌，晚上睡觉必须关机”",
+        rumor: "短视频用模糊的“国外研究报告”截图说明，称手机在夜间持续向大脑释放致癌辐射。",
+        truth: "符合国家标准的手机射频电磁辐射远低于公众安全限值，目前没有可靠证据表明日常使用手机会直接导致癌症。相较而言，更值得关注的是睡前刷手机影响睡眠质量。",
+        key: "辐射计量单位、国家标准、权威机构研究结论"
+      },
+      {
+        icon: "i-stethoscope",
+        tag: "就医提醒",
+        title: "“医保卡被停用，点开短信链接就能恢复报销”",
+        rumor: "收到短信称医保账户异常，要求点击链接“补录”姓名、银行卡和验证码，否则将停止医保报销。",
+        truth: "医保部门不会通过陌生短信索要银行卡密码和验证码，也不会要求下载不明软件处理账户异常。收到此类通知请通过官方医保服务热线或医保大厅核实。",
+        key: "官方服务电话、短信域名、是否索要验证码"
+      }
+    ];
+
+    let activeCase = 0;
+    let quizIndex = 0;
+    let score = 0;
+    let answered = false;
+    let quizStarted = false;
+
+    const caseTitle = document.getElementById("caseTitle");
+    const caseTag = document.getElementById("caseTag");
+    const caseRumor = document.getElementById("caseRumor");
+    const caseTruth = document.getElementById("caseTruth");
+    const caseKey = document.getElementById("caseKey");
+    const caseCount = document.getElementById("caseCount");
+    const caseId = document.getElementById("caseId");
+    const casePrev = document.getElementById("casePrev");
+    const caseNext = document.getElementById("caseNext");
+    const casePrevText = document.getElementById("casePrevText");
+    const caseNextText = document.getElementById("caseNextText");
+    const quizProgress = document.getElementById("quizProgress");
+    const questionText = document.getElementById("questionText");
+    const quizOptions = document.getElementById("quizOptions");
+    const quizFeedback = document.getElementById("quizFeedback");
+    const feedbackIcon = document.getElementById("feedbackIcon");
+    const feedbackTitle = document.getElementById("feedbackTitle");
+    const feedbackText = document.getElementById("feedbackText");
+    const quizNext = document.getElementById("quizNext");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultText = document.getElementById("resultText");
+    const resultEyebrow = document.getElementById("resultEyebrow");
+
+    const iconArrow = '<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>';
+    const iconCheck = '<svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>';
+    const iconClose = '<svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg>';
+
+    function goToScreen(name) {
+      screens.forEach((screen) => {
+        screen.classList.toggle("is-active", screen.dataset.screen === name);
+      });
+    }
+
+    document.getElementById("startButton").addEventListener("click", () => goToScreen("triage"));
+    document.querySelectorAll("[data-go]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.go;
+        if (target === "quiz") {
+          if (!quizStarted) {
+            quizStarted = true;
+            startQuiz();
+          }
+        }
+        goToScreen(target);
+      });
+    });
+
+    document.querySelectorAll(".triage-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        activeCase = Number(item.dataset.case);
+        renderCase();
+        goToScreen("case");
+      });
+    });
+
+    function caseIconName(name) {
+      const current = caseData[activeCase];
+      if (name === "i-pill" && current.tag === "用药误区") return "i-pill";
+      if (name === "i-eye" && current.tag === "检查治疗") return "i-eye";
+      if (name === "i-heart" && current.tag === "生活健康") return "i-heart";
+      return "i-stethoscope";
+    }
+
+    function renderCase() {
+      const item = caseData[activeCase];
+      caseTag.innerHTML = `<svg class="icon" aria-hidden="true"><use href="#${caseIconName(item.icon)}"></use></svg>${item.tag}`;
+      caseTitle.textContent = item.title;
+      caseRumor.textContent = item.rumor;
+      caseTruth.textContent = item.truth;
+      caseKey.textContent = item.key;
+      caseCount.textContent = `${activeCase + 1} / ${caseData.length}`;
+      caseId.textContent = `病例 0${activeCase + 1} / 04`;
+      casePrevText.textContent = activeCase === 0 ? "返回科室" : "上一病例";
+      caseNextText.textContent = activeCase === caseData.length - 1 ? "进入防谣技能" : "下一病例";
+    }
+
+    casePrev.addEventListener("click", () => {
+      if (activeCase === 0) {
+        goToScreen("triage");
+      } else {
+        activeCase -= 1;
+        renderCase();
+      }
+    });
+
+    caseNext.addEventListener("click", () => {
+      if (activeCase === caseData.length - 1) {
+        goToScreen("skill");
+      } else {
+        activeCase += 1;
+        renderCase();
+      }
+    });
+
+    document.getElementById("skillNext").addEventListener("click", () => {
+      if (!quizStarted) {
+        quizStarted = true;
+        startQuiz();
+      }
+      goToScreen("quiz");
+    });
+
+    const questions = [
+      {
+        text: "家族群转发“老中医秘方包治高血压”，最理性的做法是？",
+        options: [
+          "立刻转发给患高血压的家人",
+          "先查秘方有无药品资质，并提醒家人遵医嘱",
+          "让家人把降压药停掉试试偏方",
+          "偏方多试没坏处，顺手点个赞"
+        ],
+        correct: 1,
+        correctTitle: "先查资质，再提醒家人",
+        correctText: "慢病用药调整必须遵医嘱，遇到来路不明的秘方要先查证。",
+        wrongTitle: "别让家人为偏方冒险",
+        wrongText: "药品和偏方有严格区别，擅自停药可能带来更大健康风险。"
+      },
+      {
+        text: "一篇标题写着“国家卫健委紧急通知：所有保健品都能治病”的文章，最可疑的是？",
+        options: [
+          "文章里有一张截图",
+          "没有文号、官方发布平台和发布时间",
+          "转发的人很多",
+          "标题字数短，容易记住"
+        ],
+        correct: 1,
+        correctTitle: "你找到了关键缺口",
+        correctText: "权威健康信息会写明发布单位、文号或发布日期，不会只靠截图传播。",
+        wrongTitle: "截图不等于官方发布",
+        wrongText: "信息越强调紧急，越要核对它的原始出处和发布时间。"
+      },
+      {
+        text: "收到短信称医保卡异常，要求点链接“补录”并填写验证码，正确做法是？",
+        options: [
+          "马上填写，避免影响报销",
+          "点进去看看页面再决定",
+          "不点链接，通过官方渠道核实",
+          "先转账一笔“解冻费”"
+        ],
+        correct: 2,
+        correctTitle: "不点、不填、先核实",
+        correctText: "医保部门不会用陌生短信索要银行卡密码和验证码，请通过官方渠道确认。",
+        wrongTitle: "陌生链接往往通向骗局",
+        wrongText: "凡要求填写验证码、转账解冻的通知，都应直接通过官方渠道核实。"
+      },
+      {
+        text: "看到有人传播“吃某种野菜能抗癌”的医疗谣言，更像护网行动的是？",
+        options: [
+          "转发给想食疗的亲友",
+          "自己知道是假的就算了",
+          "用可靠医学信源核实，再提醒身边人，必要时举报",
+          "在评论区说偏方没有副作用"
+        ],
+        correct: 2,
+        correctTitle: "核实、提醒、举报都做到了",
+        correctText: "护网不只是自己不信，也帮身边的人少走一条错误的信息路径。",
+        wrongTitle: "沉默也是一种放任",
+        wrongText: "用可靠来源纠正和提醒，能让健康谣言少一次继续传播的机会。"
+      }
+    ];
+
+    function resetQuiz() {
+      quizIndex = 0;
+      score = 0;
+      answered = false;
+      quizStarted = false;
+    }
+
+    function startQuiz() {
+      quizIndex = 0;
+      score = 0;
+      answered = false;
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      answered = false;
+      const question = questions[quizIndex];
+      questionText.textContent = question.text;
+      quizFeedback.hidden = true;
+      quizNext.hidden = true;
+      quizProgress.textContent = `${quizIndex + 1} / ${questions.length}`;
+      quizOptions.innerHTML = "";
+
+      question.options.forEach((optionText, optionIndex) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "quiz-option";
+        button.innerHTML = `
+          <span class="quiz-option__key">${String.fromCharCode(65 + optionIndex)}</span>
+          <span>${optionText}</span>
+        `;
+        button.addEventListener("click", () => chooseOption(optionIndex, button));
+        quizOptions.appendChild(button);
+      });
+    }
+
+    function chooseOption(optionIndex, selectedButton) {
+      if (answered) return;
+      answered = true;
+      const question = questions[quizIndex];
+      const buttons = Array.from(quizOptions.querySelectorAll(".quiz-option"));
+      buttons.forEach((button) => {
+        button.disabled = true;
+      });
+
+      const isCorrect = optionIndex === question.correct;
+      if (isCorrect) {
+        score += 1;
+        selectedButton.classList.add("is-correct");
+        feedbackIcon.innerHTML = iconCheck;
+        feedbackTitle.textContent = question.correctTitle;
+        feedbackText.textContent = question.correctText;
+      } else {
+        selectedButton.classList.add("is-wrong");
+        buttons[question.correct].classList.add("is-correct");
+        feedbackIcon.innerHTML = iconClose;
+        feedbackTitle.textContent = question.wrongTitle;
+        feedbackText.textContent = question.wrongText;
+      }
+
+      quizFeedback.hidden = false;
+      quizNext.hidden = false;
+      const isLast = quizIndex === questions.length - 1;
+      quizNext.innerHTML = `${isLast ? "查看护网徽章" : "下一题"}${iconArrow}`;
+    }
+
+    quizNext.addEventListener("click", () => {
+      if (quizIndex < questions.length - 1) {
+        quizIndex += 1;
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    });
+
+    function showResult() {
+      resultEyebrow.textContent = "同心护网徽章";
+      if (score === questions.length) {
+        resultTitle.textContent = "健康信息把关人";
+        resultText.textContent = "四道医疗健康谣言场景全部判断正确。你既没有被养生话术带偏，也懂得先核实再提醒家人。";
+      } else if (score >= 3) {
+        resultTitle.textContent = "靠谱护网人";
+        resultText.textContent = "你已经能识别大部分健康谣言套路。再记住“不点、不填、先核实”，就能更稳地守护身边人。";
+      } else if (score >= 2) {
+        resultTitle.textContent = "护网侦察员";
+        resultText.textContent = "你已经有了基本判断力，建议回到谣言病例里多看几组真实话术，再回来挑战一次。";
+      } else {
+        resultTitle.textContent = "护网新学员";
+        resultText.textContent = "医疗健康谣言常利用关心和焦虑，别灰心，把“先查证再转发”变成习惯就会越来越敏锐。";
+      }
+      goToScreen("result");
+    }
+
+    document.getElementById("resultRetry").addEventListener("click", () => {
+      quizStarted = true;
+      startQuiz();
+      goToScreen("quiz");
+    });
+
+    document.getElementById("resultHome").addEventListener("click", () => {
+      resetQuiz();
+      goToScreen("home");
+    });
+  </script>
+</body>
+</html>
